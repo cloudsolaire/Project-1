@@ -303,10 +303,11 @@ public class GUI implements ActionListener{
                     String removeID = extractItemFromDetails(itemDetails); //Parse ID from details
                     Item updateItem = findItemByID(removeID);
                     updateItem = resetQuantity(updateItem,removeQty);
+                    System.out.println(subTotal);
                     System.out.println(itemPrice);
                     //Subtract last item discount price from subtotal
                     subTotal -= itemPrice; // Update subtotal
-                    if ((subTotal - itemPrice) < 0){ //NEED TO FIX TO ROUND TO 2 DECIMAL PLACES^^
+                    if ((subTotal) < 0){ //NEED TO FIX TO ROUND TO 2 DECIMAL PLACES^^
                         subTotal = 0.00;
                     }
                     
