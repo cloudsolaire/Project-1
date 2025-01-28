@@ -241,6 +241,7 @@ public class GUI implements ActionListener{
                 String itemDetails = displayItemDetails(foundItem, userQty, discPercent, discountPrice);
                 itemInfoStr.setText(itemDetails);
                 addButton.setEnabled(true); //Enables add button if item and quantity is not null
+                searchButton.setEnabled(false);
             }
         }
         //Add Button
@@ -363,6 +364,7 @@ public class GUI implements ActionListener{
             addButton.setEnabled(false);
             removeButton.setEnabled(false);
             checkOutButton.setEnabled(false);
+
             subTotal = 0.00;
             subTotalStr.setText(null);
 
@@ -396,6 +398,7 @@ public class GUI implements ActionListener{
             invoiceWindow.setVisible(false);
         }
     }
+
     private Item searchItem(String userInput){
         userInput = userInput.trim();
 
