@@ -1,13 +1,13 @@
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import javax.swing.table.DefaultTableModel;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import javax.swing.table.DefaultTableModel;
 
 public class csvWriter {
-    private DefaultTableModel cartModel;
-    private String fileName;
+    private final DefaultTableModel cartModel;
+    private final String fileName;
 
     public csvWriter(DefaultTableModel cartModel, String fileName){
         this.cartModel = cartModel;
@@ -15,7 +15,7 @@ public class csvWriter {
     }
 
     public void writeCartToCSV(){
-        try (BufferedWriter buffWriter = new BufferedWriter(new FileWriter(fileName))){
+        try (BufferedWriter buffWriter = new BufferedWriter(new FileWriter(fileName, true))){
             for(int row = 0; row < cartModel.getRowCount(); row++){
                 Object value = cartModel.getValueAt(row, 0);
                 if (value != null){
@@ -25,7 +25,7 @@ public class csvWriter {
                     buffWriter.newLine();
                 }
             }
-            buffWriter.newLine();
+            
         } 
         catch (IOException e) {
             System.err.println("Error writing cart to transaction.csv" + e.getMessage());

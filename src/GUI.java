@@ -3,14 +3,14 @@
    Assignment title: Project 1 - An Event-driven Enterprise Simulation
    Date: Sunday, January 26, 2025 
  */
+import java.awt.*;
+import java.awt.event.*;
 import java.io.*;
 import java.text.DecimalFormat;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.awt.event.*;
 
 public class GUI implements ActionListener{
     //CSV Reader
@@ -37,8 +37,12 @@ public class GUI implements ActionListener{
 
     //GUI invoice window
     private JFrame invoiceWindow = new JFrame("Nile.com - FINAL INVOICE");
-    private JPanel invoicePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    private JPanel invoicePanel = new JPanel(new BorderLayout());
     private JTextArea invoiceLabel = new JTextArea();
+
+    //GUI invoice close button
+    private JPanel invoiceButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+    private JButton closeInvoiceButton = new JButton("OK");
 
     //GUI sections 
     private JPanel top = new JPanel();
@@ -112,7 +116,10 @@ public class GUI implements ActionListener{
         invoiceLabel.setWrapStyleWord(true);
         
         //Invoice panel
-        invoicePanel.add(new JScrollPane(invoiceLabel));
+        invoiceButtonPanel.add(closeInvoiceButton);
+        invoicePanel.add(invoiceButtonPanel, BorderLayout.SOUTH);
+        closeInvoiceButton.addActionListener(this);
+        invoiceWindow.add(invoicePanel);
 
         //Top panel
         top.setBackground(Color.BLACK);
@@ -336,9 +343,7 @@ public class GUI implements ActionListener{
             //Write cart to transactions file
             csvWriter writer = new csvWriter(cartModel, "transactions.csv");
             writer.writeCartToCSV();
-            
             invoiceWindow.setVisible(true);
-
         }
 
         //Empty Cart - Start A New Order Button 
@@ -377,13 +382,18 @@ public class GUI implements ActionListener{
                 }
             }
             if (isCheckedOut == true){
+                window.setVisible(false);
                 new GUI();
-                System.out.println("Restarting...");
             }
         }
         //Exit (Close App) button
         else if (e.getSource() == exitButton){
             System.exit(0);
+        }
+
+        //Invoice Window Button
+        else if (e.getSource() == closeInvoiceButton){
+            invoiceWindow.setVisible(false);
         }
     }
     private Item searchItem(String userInput){
@@ -573,9 +583,11 @@ public class GUI implements ActionListener{
     }
     private String createInvoice(DefaultTableModel cartList, int numCartItems, double subTotal){
         String newline = System.lineSeparator();
-        String date = "Date: " + csvWriter.findDateTime() + newline; 
-        String lineItems = "Number of line items: " + numCartItems + newline;
-        String lineTitles = "Item# / ID / Title / Price / Qty / Disc % / Subtotal:" + newline;
+        String adjustStr = newline.repeat(5);
+        String tab = "\t";
+        String date = tab +"Date: " + csvWriter.findDateTime() + newline; 
+        String lineItems = tab + "Number of line items: " + numCartItems + newline;
+        String lineTitles = tab + "Item# / ID / Title / Price / Qty / Disc % / Subtotal:" + newline;
 
         //Create list of items in cart
         String invoiceItems = "";
@@ -585,25 +597,23 @@ public class GUI implements ActionListener{
                 if (value != null) {
                     String cartItems = value.toString();
                     String parsedCart = invoiceCartHelper(cartItems);
-                    invoiceItems += numItems + ". " + parsedCart + newline;
+                    invoiceItems += tab + numItems + ". " + parsedCart + newline;
                     numItems++;
                 }
         }
 
-        String orderSubtotal = "Order subtotal: $" + decFormat.format(subTotal)+ newline;
+        String orderSubtotal = tab + "Order subtotal: $" + decFormat.format(subTotal)+ newline;
         int tax = 6;
-        String taxRate = tax + "%"+ newline;
+        String taxRate = tab + tax + "%"+ newline;
         double taxAmt = subTotal * ((double)tax / 100);
-        String taxAmtStr = "Tax amount: $" + decFormat.format(taxAmt) + newline;
+        String taxAmtStr = tab + "Tax amount: $" + decFormat.format(taxAmt) + newline;
         double total = subTotal + taxAmt;
-        String totalStr = "ORDER TOTAL: " + decFormat.format(total) + newline;
-        String curtesyStr = "Thanks for shopping at Nile.com!"+ newline;
+        String totalStr = tab + "ORDER TOTAL: " + decFormat.format(total) + newline;
+        String curtesyStr = tab + "Thanks for shopping at Nile.com!"+ newline;
 
-        String finalInvStr = date + newline + lineItems + newline + lineTitles + newline + invoiceItems +
+        String finalInvStr = adjustStr + date + newline + lineItems + newline + lineTitles + newline + invoiceItems +
                              newline + orderSubtotal + newline + taxRate + newline + taxAmtStr + newline + 
                              totalStr + newline + curtesyStr;
-        
-        System.out.println(finalInvStr);
 
         return finalInvStr;
     }

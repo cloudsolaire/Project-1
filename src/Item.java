@@ -4,11 +4,11 @@
    Date: Sunday, January 26, 2025 
  */
 public class Item {
-    private String itemID;
-    private String itemDescription;
+    private final String itemID;
+    private final String itemDescription;
     private boolean inStock;
     private int quantity;
-    private double price;
+    private final double price;
 
     public Item(String itemID, String itemDescription, Boolean inStock, int quantity, double price) {
         this.itemID = itemID;

@@ -7,7 +7,7 @@ import java.io.*;
 import java.util.*;
 
 public class csvReader {
-    private List<Item> items;
+    private final List<Item> items;
 
     // Constructor to read the CSV and load items
     public csvReader(String filePath) throws IOException {
