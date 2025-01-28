@@ -282,6 +282,7 @@ public class GUI implements ActionListener{
                 entryIDField.setText(null);
                 entryQtyField.setText(null);
                 addButton.setEnabled(false);
+                searchButton.setEnabled(true);
             }
             resetCurItem();
         }
@@ -302,12 +303,13 @@ public class GUI implements ActionListener{
                     String removeID = extractItemFromDetails(itemDetails); //Parse ID from details
                     Item updateItem = findItemByID(removeID);
                     updateItem = resetQuantity(updateItem,removeQty);
-
+                    System.out.println(itemPrice);
                     //Subtract last item discount price from subtotal
                     subTotal -= itemPrice; // Update subtotal
                     if ((subTotal - itemPrice) < 0){ //NEED TO FIX TO ROUND TO 2 DECIMAL PLACES^^
                         subTotal = 0.00;
                     }
+                    
                     subTotalStr.setText("$" + decFormat.format(subTotal));
                     
                     //Updates num of cart items, search items, cart current status
@@ -320,6 +322,7 @@ public class GUI implements ActionListener{
                     subTotalTag.setText("Current Subtotal for " + cartCount + " item(s):");
                     entryIDField.setText(null);
                     entryQtyField.setText(null);
+                    itemInfoStr.setText(null);
                     break;
                 }
             }
@@ -417,6 +420,7 @@ public class GUI implements ActionListener{
         }
         if (userQty > curItem.getQuantity()){
             JOptionPane.showMessageDialog(window,"Insufficient stock. Only " + curItem.getQuantity() + " on hand. Please reduce the quantity.");
+            addButton.setEnabled(false);
             entryQtyField.setText(null);
         }
         
