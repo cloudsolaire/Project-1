@@ -37,7 +37,7 @@ public class GUI implements ActionListener{
 
     //GUI invoice window
     private JFrame invoiceWindow = new JFrame("Nile.com - FINAL INVOICE");
-    private JPanel invoicePanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+    private JPanel invoicePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
     private JTextArea invoiceLabel = new JTextArea();
 
     //GUI sections 
@@ -573,9 +573,9 @@ public class GUI implements ActionListener{
     }
     private String createInvoice(DefaultTableModel cartList, int numCartItems, double subTotal){
         String newline = System.lineSeparator();
-        String date = "Date: " + csvWriter.findDateTime(); 
-        String lineItems = "Number of line items: " + numCartItems;
-        String lineTitles = "Item# / ID / Title / Price / Qty / Disc % / Subtotal:";
+        String date = "Date: " + csvWriter.findDateTime() + newline; 
+        String lineItems = "Number of line items: " + numCartItems + newline;
+        String lineTitles = "Item# / ID / Title / Price / Qty / Disc % / Subtotal:" + newline;
 
         //Create list of items in cart
         String invoiceItems = "";
@@ -590,14 +590,14 @@ public class GUI implements ActionListener{
                 }
         }
 
-        String orderSubtotal = "Order subtotal: $" + decFormat.format(subTotal);
+        String orderSubtotal = "Order subtotal: $" + decFormat.format(subTotal)+ newline;
         int tax = 6;
-        String taxRate = tax + "%";
+        String taxRate = tax + "%"+ newline;
         double taxAmt = subTotal * ((double)tax / 100);
-        String taxAmtStr = "Tax amount: $" + decFormat.format(taxAmt);
+        String taxAmtStr = "Tax amount: $" + decFormat.format(taxAmt) + newline;
         double total = subTotal + taxAmt;
-        String totalStr = "ORDER TOTAL: " + decFormat.format(total);
-        String curtesyStr = "Thanks for shopping at Nile.com!";
+        String totalStr = "ORDER TOTAL: " + decFormat.format(total) + newline;
+        String curtesyStr = "Thanks for shopping at Nile.com!"+ newline;
 
         String finalInvStr = date + newline + lineItems + newline + lineTitles + newline + invoiceItems +
                              newline + orderSubtotal + newline + taxRate + newline + taxAmtStr + newline + 
